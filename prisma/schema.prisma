@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Menu {
+  menuId   Int     @id @default(autoincrement())
+  menuName String
+  groups   Group[]
+}
+
+model Group {
+  groupId   Int      @id @default(autoincrement())
+  groupName String
+  order     Int
+  items     GroupItem[]
+  menu      Menu        @relation(fields: [menuId], references: [menuId])
+  menuId    Int
+}
+
+model Item {
+  itemId       Int         @id @default(autoincrement())
+  itemName     String
+  description  String
+  price        Float
+  groups    GroupItem[]
+  // modifiers    Modifier[]
+  // GroupItem    GroupItem[]
+  // ItemModifier ItemModifier[]
+}
+
+model GroupItem {
+  groupId Int
+  itemId Int
+  group Group @relation(fields: [groupId], references: [groupId], onDelete: Cascade)
+  item Item @relation(fields: [itemId], references: [itemId], onDelete: Cascade)
+  @@id([groupId, itemId])
+}
+
+// model Modifier {
+//   modifierId             Int               @id @default(autoincrement())
+//   modifierName           String
+//   items                  Item[] // Define items relationship as many-to-many
+//   modifierItems          ModifierIngredient[]
+//   Ingredient             Ingredient?          @relation(fields: [ingredientIngredientId], references: [ingredientId])
+//   ingredientIngredientId Int?
+//   ItemModifier           ItemModifier[]
+// }
+
+// model Ingredient {
+//   ingredientId       Int               @id @default(autoincrement())
+//   ingredientName     String
+//   modifiers          Modifier[] // Define modifiers relationship as many-to-many
+//   ModifierIngredient ModifierIngredient[]
+// }
+
+// Define the junction table for many-to-many relationships
+// model GroupItem {
+//   groupId Int
+//   itemId  Int
+//   group   Group  @relation(fields: [groupId], references: [groupId])
+//   item    Item   @relation(fields: [itemId], references: [itemId])
+
+//   @@id([groupId, itemId])
+// }
+
+// model ItemModifier {
+//   itemId     Int
+//   modifierId Int
+//   item       Item     @relation(fields: [itemId], references: [itemId])
+//   // modifier   Modifier @relation(fields: [modifierId], references: [modifierId])
+
+//   @@id([itemId, modifierId])
+// }
+
+// model ModifierIngredient {
+//   modifierId   Int
+//   ingredientId Int
+//   price        Float
+//   modifier     Modifier   @relation(fields: [modifierId], references: [modifierId])
+//   ingredient   Ingredient @relation(fields: [ingredientId], references: [ingredientId])
+
+//   @@id([modifierId, ingredientId])
+// }
