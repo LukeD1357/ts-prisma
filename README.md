@@ -11,7 +11,7 @@ As it stands you are able to create a menu, which will contain menu groups (cate
 ```
 DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<database>"
 ```
-4. Setup Postgres database by running `docker-compose up -d`
+4. Setup Postgres database by running `docker-compose up -d` (remember to change the username & password in the docker-compose file)
 5. Run `npm run migrate` or `npm run db:push` to create the database and tables
 6. Run `npm run start`
 7. Server will be running on `http://localhost:3000`
